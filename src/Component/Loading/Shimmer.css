@@ -1,0 +1,599 @@
+
+/* Loading Container Variants */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.loading-default {
+    padding: 20px;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(110, 110, 114, 0.9);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+}
+
+.loading-inline {
+    flex-direction: row;
+    padding: 0;
+    gap: 8px;
+}
+
+/* Spinner Base Styles */
+.loading-spinner {
+    border-radius: 70%;
+    border-style: solid;
+    border-color: rgba(99, 102, 241, 0.2);
+    border-top-color: #6366f1;
+    border-right-color: #6366f1;
+    animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+/* Spinner Sizes */
+.loading-spinner-small {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+}
+
+.loading-spinner-medium {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+}
+
+.loading-spinner-large {
+    width: 60px;
+    height: 60px;
+    border-width: 4px;
+}
+
+/* Loading Text */
+.loading-text {
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.loading-inline .loading-text {
+    font-size: 13px;
+}
+
+/* Spin Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* =====================================================
+   SHIMMER LOADING EFFECT STYLES
+   ===================================================== */
+
+/* Base Shimmer Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Shimmer Base Element */
+.shimmer {
+    background: linear-gradient(
+        90deg,
+        #1e1e2e 0%,
+        #2a2a3e 20%,
+        #3a3a4e 40%,
+        #2a2a3e 60%,
+        #1e1e2e 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: 8px;
+}
+
+/* Light theme shimmer (if needed) */
+.shimmer-light {
+    background: linear-gradient(
+        90deg,
+        #e2e8f0 0%,
+        #f1f5f9 20%,
+        #f8fafc 40%,
+        #f1f5f9 60%,
+        #e2e8f0 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: 8px;
+}
+
+/* =====================================================
+   SHIMMER CONTAINER
+   ===================================================== */
+.shimmer-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 24px;
+    background: #0f0f1a;
+}
+
+/* =====================================================
+   DASHBOARD SHIMMER SKELETON
+   ===================================================== */
+.shimmer-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Welcome Section Shimmer */
+.shimmer-welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.shimmer-welcome-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.shimmer-title {
+    width: 320px;
+    height: 36px;
+}
+
+.shimmer-subtitle {
+    width: 280px;
+    height: 20px;
+}
+
+.shimmer-date {
+    width: 200px;
+    height: 24px;
+}
+
+/* Stats Grid Shimmer */
+.shimmer-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.shimmer-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    background: #1a1a2e;
+    border-radius: 16px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.shimmer-stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+}
+
+.shimmer-stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.shimmer-stat-label {
+    width: 100px;
+    height: 14px;
+}
+
+.shimmer-stat-number {
+    width: 60px;
+    height: 32px;
+}
+
+.shimmer-stat-trend {
+    width: 80px;
+    height: 14px;
+}
+
+/* Chart Section Shimmer */
+.shimmer-chart-section {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.shimmer-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.shimmer-chart-title {
+    width: 180px;
+    height: 24px;
+}
+
+.shimmer-chart-period {
+    width: 100px;
+    height: 20px;
+}
+
+.shimmer-chart-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    height: 200px;
+    padding: 20px 0;
+}
+
+.shimmer-bar {
+    flex: 1;
+    border-radius: 8px 8px 0 0;
+}
+
+.shimmer-chart-legend {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.shimmer-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.shimmer-legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.shimmer-legend-text {
+    width: 100px;
+    height: 14px;
+}
+
+/* =====================================================
+   TABLE/LIST SHIMMER SKELETON
+   ===================================================== */
+.shimmer-table {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.shimmer-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.shimmer-table-title {
+    width: 150px;
+    height: 24px;
+}
+
+.shimmer-table-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.shimmer-button {
+    width: 120px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.shimmer-search {
+    width: 250px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.shimmer-table-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.shimmer-table-row:last-child {
+    border-bottom: none;
+}
+
+.shimmer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.shimmer-cell-text {
+    height: 16px;
+    border-radius: 4px;
+}
+
+.shimmer-cell-sm {
+    width: 80px;
+}
+
+.shimmer-cell-md {
+    width: 150px;
+}
+
+.shimmer-cell-lg {
+    width: 200px;
+}
+
+.shimmer-cell-xl {
+    width: 280px;
+    flex: 1;
+}
+
+.shimmer-badge {
+    width: 70px;
+    height: 24px;
+    border-radius: 12px;
+}
+
+/* =====================================================
+   PROFILE SHIMMER SKELETON
+   ===================================================== */
+.shimmer-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.shimmer-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 32px;
+    background: #1a1a2e;
+    border-radius: 16px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.shimmer-profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.shimmer-profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.shimmer-profile-name {
+    width: 200px;
+    height: 28px;
+}
+
+.shimmer-profile-role {
+    width: 120px;
+    height: 20px;
+}
+
+.shimmer-profile-email {
+    width: 250px;
+    height: 16px;
+}
+
+.shimmer-profile-section {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.shimmer-section-title {
+    width: 150px;
+    height: 22px;
+    margin-bottom: 20px;
+}
+
+.shimmer-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.shimmer-label {
+    width: 100px;
+    height: 14px;
+}
+
+.shimmer-input {
+    width: 100%;
+    height: 44px;
+    border-radius: 8px;
+}
+
+/* =====================================================
+   PROJECT CARD SHIMMER SKELETON
+   ===================================================== */
+.shimmer-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.shimmer-project-card {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.shimmer-project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.shimmer-project-title {
+    width: 180px;
+    height: 22px;
+}
+
+.shimmer-project-status {
+    width: 80px;
+    height: 24px;
+    border-radius: 12px;
+}
+
+.shimmer-project-description {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.shimmer-project-line {
+    height: 14px;
+    border-radius: 4px;
+}
+
+.shimmer-project-line:nth-child(1) {
+    width: 100%;
+}
+
+.shimmer-project-line:nth-child(2) {
+    width: 85%;
+}
+
+.shimmer-project-line:nth-child(3) {
+    width: 60%;
+}
+
+.shimmer-project-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.shimmer-project-meta {
+    width: 100px;
+    height: 14px;
+}
+
+.shimmer-project-members {
+    display: flex;
+    gap: -8px;
+}
+
+.shimmer-member-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-left: -8px;
+}
+
+.shimmer-member-avatar:first-child {
+    margin-left: 0;
+}
+
+/* =====================================================
+   GENERIC PAGE SHIMMER
+   ===================================================== */
+.shimmer-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.shimmer-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shimmer-page-title {
+    width: 200px;
+    height: 32px;
+}
+
+.shimmer-page-content {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 24px;
+    min-height: 400px;
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+/* =====================================================
+   RESPONSIVE ADJUSTMENTS
+   ===================================================== */
+@media (max-width: 768px) {
+    .shimmer-container {
+        padding: 16px;
+    }
+
+    .shimmer-welcome {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .shimmer-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .shimmer-chart-container {
+        gap: 16px;
+    }
+
+    .shimmer-chart-legend {
+        flex-wrap: wrap;
+    }
+
+    .shimmer-profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .shimmer-projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .shimmer-table-row {
+        flex-wrap: wrap;
+    }
+}
+
