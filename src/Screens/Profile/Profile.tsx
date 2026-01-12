@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MdPerson, MdEmail, MdBadge, MdCalendarToday, MdEdit, MdSecurity } from 'react-icons/md';
+import { MdPerson, MdEmail, MdBadge, MdEdit, MdSecurity } from 'react-icons/md';
 import api from '../../api/axios';
 import { ProfileShimmer } from '../../Component/Loading/Shimmer';
 import './Profile.css';
