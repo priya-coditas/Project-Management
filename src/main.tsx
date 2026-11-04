@@ -1,7 +1,7 @@
 import { StrictMode, useState, useEffect } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './AppRouter'
 import AuthContext from './store/AuthContext';
 
