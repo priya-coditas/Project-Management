@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import AuthContext from "../store/AuthContext";
+import React, { useContext } from 'react';
+import AuthContext from '../store/AuthContext';
 
 function withSuperAdminAccess(WrappedComponent: React.ComponentType<any>) {
   function SuperAdminAccessComponent(props: any) {
@@ -7,8 +7,8 @@ function withSuperAdminAccess(WrappedComponent: React.ComponentType<any>) {
     const role = authContext.role;
 
     // Role checks
-    const isSuperAdmin = role === "super-admin";
-    const isAdmin = role === "admin" || isSuperAdmin;
+    const isSuperAdmin = role === 'super-admin';
+    const isAdmin = role === 'admin' || isSuperAdmin;
 
     // Permissions
     const canDelete = isSuperAdmin;
@@ -26,12 +26,7 @@ function withSuperAdminAccess(WrappedComponent: React.ComponentType<any>) {
     );
   }
 
-  SuperAdminAccessComponent.displayName =
-    "withSuperAdminAccess(" +
-    (WrappedComponent.displayName ||
-      WrappedComponent.name ||
-      "Component") +
-    ")";
+  SuperAdminAccessComponent.displayName = 'withSuperAdminAccess(' + (WrappedComponent.displayName || WrappedComponent.name || 'Component') + ')';
 
   return SuperAdminAccessComponent;
 }

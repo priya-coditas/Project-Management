@@ -3,14 +3,19 @@ import { Navigate, Outlet } from 'react-router-dom';
 import AuthContext from '../store/AuthContext';
 
 function ProtectedRoute() {
-    const { user } = useContext(AuthContext);
-    const token = localStorage.getItem('token');
-    const isAuthenticated = token && user;
+  const { user } = useContext(AuthContext);
+  const token = localStorage.getItem('token');
+  const isAuthenticated = token && user;
 
-    if (!isAuthenticated) {
-        return <Navigate to="/" replace />;
-    }
-    return <Outlet />;
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to="/"
+        replace
+      />
+    );
+  }
+  return <Outlet />;
 }
 
 export default ProtectedRoute;

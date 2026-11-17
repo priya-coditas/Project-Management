@@ -1,5 +1,5 @@
-import NavHeader from "../../Component/NavHeader/NavHeader";
-import { Outlet } from "react-router-dom";
+import NavHeader from '../../Component/NavHeader/NavHeader';
+import { Outlet } from 'react-router-dom';
 
 function MainLayout() {
   return (

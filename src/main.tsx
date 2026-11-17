@@ -1,8 +1,8 @@
-import { StrictMode, useState, useEffect } from 'react'
+import { StrictMode, useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import AppRouter from './AppRouter'
+import AppRouter from './AppRouter';
 import AuthContext from './store/AuthContext';
 
 const AppWrapper = () => {
@@ -37,16 +37,25 @@ const AppWrapper = () => {
   }, [userId]);
 
   return (
-    <AuthContext.Provider value={{ role, setRole, user, setUser, userId, setUserId }}>
+    <AuthContext.Provider
+      value={{
+        role,
+        setRole,
+        user,
+        setUser,
+        userId,
+        setUserId,
+      }}
+    >
       <AppRouter />
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-      <BrowserRouter>
-        <AppWrapper/>
-      </BrowserRouter>
+    <BrowserRouter>
+      <AppWrapper />
+    </BrowserRouter>
   </StrictMode>,
-)
+);

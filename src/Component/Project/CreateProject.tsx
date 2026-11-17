@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import './CreateProject.css'
+import './CreateProject.css';
 import { MdClose, MdFolder, MdDescription, MdFlag, MdCode, MdCurrencyRupee, MdDateRange, MdGroup, MdCheck } from 'react-icons/md';
-import { 
-  PROJECT_NAME, 
-  DESCRIPTION, 
-  STATUS, 
-  PRIORITY, 
-  TECHNOLOGIES, 
-  BUDGET, 
-  TEAM_MEMBERS, 
-  START_DATE, 
-  END_DATE, 
-  CREATE_PROJECT, 
+import {
+  PROJECT_NAME,
+  DESCRIPTION,
+  STATUS,
+  PRIORITY,
+  TECHNOLOGIES,
+  BUDGET,
+  TEAM_MEMBERS,
+  START_DATE,
+  END_DATE,
+  CREATE_PROJECT,
   CANCEL,
   CREATE_NEW_PROJECT,
   CREATE_PROJECT_SUBTITLE,
@@ -42,7 +42,7 @@ import {
   ERROR_BUDGET_MAX_LIMIT,
   ERROR_START_DATE_REQUIRED,
   ERROR_END_DATE_REQUIRED,
-  ERROR_END_DATE_AFTER_START
+  ERROR_END_DATE_AFTER_START,
 } from '../../Constants/string';
 import api from '../../api/axios';
 import { Loading } from '../Loading/Shimmer';
@@ -87,15 +87,15 @@ interface CreateProjectProps {
 
 function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps) {
   const [formData, setFormData] = useState<CreateProjectFormData>({
-    name: "",
-    description: "",
-    status: "",
-    priority: "",
-    technologies: "",
-    budget: "",
-    startDate: "",
-    endDate: "",
-    teamMembers: []
+    name: '',
+    description: '',
+    status: '',
+    priority: '',
+    technologies: '',
+    budget: '',
+    startDate: '',
+    endDate: '',
+    teamMembers: [],
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -110,7 +110,7 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
       try {
         const response = await api.get('/users');
         const responseData = response.data;
-        
+
         let userData: User[] = [];
         if (Array.isArray(responseData)) {
           userData = responseData;
@@ -133,26 +133,32 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
   if (!isOpen) return null;
 
   const toggleUserSelection = (userId: string) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const isSelected = prev.teamMembers.includes(userId);
       if (isSelected) {
-        return { ...prev, teamMembers: prev.teamMembers.filter(id => id !== userId) };
+        return {
+          ...prev,
+          teamMembers: prev.teamMembers.filter((id) => id !== userId),
+        };
       } else {
-        return { ...prev, teamMembers: [...prev.teamMembers, userId] };
+        return {
+          ...prev,
+          teamMembers: [...prev.teamMembers, userId],
+        };
       }
     });
   };
 
   const getSelectedUserNames = () => {
     return formData.teamMembers
-      .map(id => users.find(u => (u.id?.toString() || u._id) === id)?.name)
+      .map((id) => users.find((u) => (u.id?.toString() || u._id) === id)?.name)
       .filter(Boolean)
       .join(', ');
   };
 
   const validateField = (name: string, value: string | number): string => {
     const strValue = String(value);
-    
+
     switch (name) {
       case 'name':
         if (!strValue.trim()) return ERROR_PROJECT_NAME_REQUIRED;
@@ -189,27 +195,42 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
     setApiError('');
-    
+
     // Validate on change if field has been touched
     if (touched[name]) {
       const error = validateField(name, value);
-      setErrors((prev) => ({ ...prev, [name]: error }));
+      setErrors((prev) => ({
+        ...prev,
+        [name]: error,
+      }));
     }
 
     // Special case: validate end date when start date changes
     if (name === 'startDate' && touched.endDate && formData.endDate) {
       const endDateError = formData.endDate < value ? ERROR_END_DATE_AFTER_START : '';
-      setErrors((prev) => ({ ...prev, endDate: endDateError }));
+      setErrors((prev) => ({
+        ...prev,
+        endDate: endDateError,
+      }));
     }
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setTouched((prev) => ({ ...prev, [name]: true }));
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
     const error = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({
+      ...prev,
+      [name]: error,
+    }));
   };
 
   const validateForm = (): boolean => {
@@ -223,7 +244,7 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
       startDate: validateField('startDate', formData.startDate),
       endDate: validateField('endDate', formData.endDate),
     };
-    
+
     setErrors(newErrors);
     setTouched({
       name: true,
@@ -234,21 +255,21 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
       startDate: true,
       endDate: true,
     });
-    
-    return !Object.values(newErrors).some(error => error);
+
+    return !Object.values(newErrors).some((error) => error);
   };
 
   const resetForm = () => {
     setFormData({
-      name: "",
-      description: "",
-      status: "",
-      priority: "",
-      technologies: "",
-      budget: "",
-      startDate: "",
-      endDate: "",
-      teamMembers: []
+      name: '',
+      description: '',
+      status: '',
+      priority: '',
+      technologies: '',
+      budget: '',
+      startDate: '',
+      endDate: '',
+      teamMembers: [],
     });
     setErrors({});
     setTouched({});
@@ -258,20 +279,23 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setLoading(true);
       setApiError('');
-      
+
       try {
         // Convert technologies string to array and budget to number for API
         const submitData = {
           ...formData,
           technologies: formData.technologies
-            ? formData.technologies.split(',').map(tech => tech.trim()).filter(Boolean)
+            ? formData.technologies
+                .split(',')
+                .map((tech) => tech.trim())
+                .filter(Boolean)
             : [],
           budget: formData.budget ? Number(formData.budget) : 0,
-          teamMembers: formData.teamMembers
+          teamMembers: formData.teamMembers,
         };
         await api.post('/projects', submitData);
         resetForm();
@@ -301,10 +325,21 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
   return (
     <>
       {/* Loading Overlay */}
-      {loading && <Loading variant="overlay" text={CREATING_PROJECT} />}
-      
-      <div className="modal-overlay" onClick={handleClose}>
-        <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+      {loading && (
+        <Loading
+          variant="overlay"
+          text={CREATING_PROJECT}
+        />
+      )}
+
+      <div
+        className="modal-overlay"
+        onClick={handleClose}
+      >
+        <div
+          className="modal-container"
+          onClick={(e) => e.stopPropagation()}
+        >
           {/* Modal Header */}
           <div className="modal-header">
             <div className="modal-title">
@@ -316,19 +351,23 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                 <p>{CREATE_PROJECT_SUBTITLE}</p>
               </div>
             </div>
-            <button className="modal-close" onClick={handleClose} disabled={loading}>
+            <button
+              className="modal-close"
+              onClick={handleClose}
+              disabled={loading}
+            >
               <MdClose size={24} />
             </button>
           </div>
 
           {/* Modal Body */}
-          <form onSubmit={onSubmit} className="modal-form" noValidate>
+          <form
+            onSubmit={onSubmit}
+            className="modal-form"
+            noValidate
+          >
             {/* API Error Message */}
-            {apiError && (
-              <div className="api-error-message">
-                {apiError}
-              </div>
-            )}
+            {apiError && <div className="api-error-message">{apiError}</div>}
 
             <div className="form-grid">
               {/* Project Name */}
@@ -347,9 +386,7 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                   onBlur={handleBlur}
                   disabled={loading}
                 />
-                {errors.name && touched.name && (
-                  <span className="error-message">{errors.name}</span>
-                )}
+                {errors.name && touched.name && <span className="error-message">{errors.name}</span>}
               </div>
 
               {/* Description */}
@@ -368,9 +405,7 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                   rows={3}
                   disabled={loading}
                 />
-                {errors.description && touched.description && (
-                  <span className="error-message">{errors.description}</span>
-                )}
+                {errors.description && touched.description && <span className="error-message">{errors.description}</span>}
               </div>
 
               {/* Status */}
@@ -394,9 +429,7 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                   <option value="completed">{STATUS_COMPLETED}</option>
                   <option value="cancelled">{STATUS_CANCELLED}</option>
                 </select>
-                {errors.status && touched.status && (
-                  <span className="error-message">{errors.status}</span>
-                )}
+                {errors.status && touched.status && <span className="error-message">{errors.status}</span>}
               </div>
 
               {/* Priority */}
@@ -418,9 +451,7 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                   <option value="medium">{PRIORITY_MEDIUM}</option>
                   <option value="high">{PRIORITY_HIGH}</option>
                 </select>
-                {errors.priority && touched.priority && (
-                  <span className="error-message">{errors.priority}</span>
-                )}
+                {errors.priority && touched.priority && <span className="error-message">{errors.priority}</span>}
               </div>
 
               {/* Technologies */}
@@ -457,9 +488,7 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                   min="0"
                   disabled={loading}
                 />
-                {errors.budget && touched.budget && (
-                  <span className="error-message">{errors.budget}</span>
-                )}
+                {errors.budget && touched.budget && <span className="error-message">{errors.budget}</span>}
               </div>
 
               {/* Team Members Multi-Select */}
@@ -469,12 +498,12 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                   {TEAM_MEMBERS}
                 </label>
                 <div className="multi-select-container">
-                  <div 
+                  <div
                     className="multi-select-input"
                     onClick={() => !loading && setShowUserDropdown(!showUserDropdown)}
                   >
                     <span className={formData.teamMembers.length > 0 ? 'selected-text' : 'placeholder-text'}>
-                      {formData.teamMembers.length > 0 
+                      {formData.teamMembers.length > 0
                         ? getSelectedUserNames() || `${formData.teamMembers.length} members selected`
                         : ADD_TEAM_MEMBERS}
                     </span>
@@ -485,18 +514,16 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                       {users.length === 0 ? (
                         <div className="dropdown-item no-users">No users available</div>
                       ) : (
-                        users.map(user => {
+                        users.map((user) => {
                           const userId = user.id?.toString() || user._id || '';
                           const isSelected = formData.teamMembers.includes(userId);
                           return (
-                            <div 
+                            <div
                               key={userId}
                               className={`dropdown-item ${isSelected ? 'selected' : ''}`}
                               onClick={() => toggleUserSelection(userId)}
                             >
-                              <div className="checkbox-wrapper">
-                                {isSelected && <MdCheck size={16} />}
-                              </div>
+                              <div className="checkbox-wrapper">{isSelected && <MdCheck size={16} />}</div>
                               <div className="user-info-dropdown">
                                 <span className="user-name-dropdown">{user.name}</span>
                                 <span className="user-email-dropdown">{user.email}</span>
@@ -525,9 +552,7 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                   onBlur={handleBlur}
                   disabled={loading}
                 />
-                {errors.startDate && touched.startDate && (
-                  <span className="error-message">{errors.startDate}</span>
-                )}
+                {errors.startDate && touched.startDate && <span className="error-message">{errors.startDate}</span>}
               </div>
 
               {/* End Date */}
@@ -545,24 +570,22 @@ function CreateProject({ isOpen, onClose, onProjectCreated }: CreateProjectProps
                   onBlur={handleBlur}
                   disabled={loading}
                 />
-                {errors.endDate && touched.endDate && (
-                  <span className="error-message">{errors.endDate}</span>
-                )}
+                {errors.endDate && touched.endDate && <span className="error-message">{errors.endDate}</span>}
               </div>
             </div>
 
             {/* Modal Footer */}
             <div className="modal-footer">
-              <button 
-                type="button" 
-                className="btn-cancel" 
+              <button
+                type="button"
+                className="btn-cancel"
                 onClick={handleClose}
                 disabled={loading}
               >
                 {CANCEL}
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="btn-create"
                 disabled={loading}
               >

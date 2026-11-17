@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
-import AuthContext from "../store/AuthContext";
+import React, { useContext } from 'react';
+import AuthContext from '../store/AuthContext';
 
 function withProjectAccess(WrappedComponent: React.ComponentType<any>) {
   function ProjectAccessComponent(props: any) {
     const authContext = useContext(AuthContext);
     const role = authContext.role;
 
-    const isSuperAdmin = role === "super-admin";
-    const isAdmin = role === "admin" || isSuperAdmin;
+    const isSuperAdmin = role === 'super-admin';
+    const isAdmin = role === 'admin' || isSuperAdmin;
 
     // Permissions
     const canCreateProject = isAdmin;
@@ -26,12 +26,7 @@ function withProjectAccess(WrappedComponent: React.ComponentType<any>) {
     );
   }
 
-  ProjectAccessComponent.displayName =
-    "withProjectAccess(" +
-    (WrappedComponent.displayName ||
-      WrappedComponent.name ||
-      "Component") +
-    ")";
+  ProjectAccessComponent.displayName = 'withProjectAccess(' + (WrappedComponent.displayName || WrappedComponent.name || 'Component') + ')';
 
   return ProjectAccessComponent;
 }
