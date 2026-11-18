@@ -3,6 +3,7 @@ import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../store/AuthContext';
 import api from '../../api/axios';
+import axios from 'axios';
 import { MdEmail, MdLock, MdVisibility, MdVisibilityOff, MdFolder } from 'react-icons/md';
 import { Loading } from '../../Component/Loading/Shimmer';
 
@@ -42,8 +43,8 @@ function Login() {
       navigate('/dashboard', {
         replace: true,
       });
-    } catch (err: any) {
-      const errorData = err.response?.data?.message;
+    } catch (err) {
+      const errorData = axios.isAxiosError<{ message?: string | string[] }>(err) ? err.response?.data?.message : undefined;
 
       if (Array.isArray(errorData)) {
         setErrors(errorData);

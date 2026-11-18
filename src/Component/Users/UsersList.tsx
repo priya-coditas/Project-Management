@@ -5,6 +5,7 @@ import EditUser from './EditUser';
 import { useNavigate } from 'react-router-dom';
 import { MdSearch, MdFilterList, MdAdd, MdEdit, MdDelete, MdPerson, MdArrowBack, MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import api from '../../api/axios';
+import axios from 'axios';
 import { TableShimmer } from '../Loading/Shimmer';
 import withSuperAdminAccess from '../../HOC/withSuperAdminAccess';
 
@@ -58,7 +59,7 @@ function UsersList({ canDelete, canToggleStatus }: { canDelete: boolean; canTogg
 
       // Handle different API response structures
       let userData: User[] = [];
-      let paginationData: any = null;
+      let paginationData: Partial<Record<string, number>> | null = null;
 
       if (Array.isArray(responseData)) {
         // If response is directly an array of users
@@ -91,9 +92,11 @@ function UsersList({ canDelete, canToggleStatus }: { canDelete: boolean; canTogg
         totalUsers: paginationData?.totalUsers || paginationData?.total || userData.length,
         limit: paginationData?.limit || 10,
       });
-    } catch (err: any) {
+    } catch (err) {
       console.error('Fetch Users Error:', err);
-      const errorMessage = err.response?.data?.message;
+      const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+        ? err.response?.data?.message
+        : undefined;
       if (typeof errorMessage === 'string') {
         setError(errorMessage);
       } else {
@@ -146,9 +149,11 @@ function UsersList({ canDelete, canToggleStatus }: { canDelete: boolean; canTogg
       await api.delete(`/users/${userId}`);
       // Refresh the users list after deleting
       fetchUsers(pagination.currentPage);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Delete User Error:', err);
-      const errorMessage = err.response?.data?.message;
+      const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+        ? err.response?.data?.message
+        : undefined;
       if (typeof errorMessage === 'string') {
         setError(errorMessage);
       } else {
@@ -179,9 +184,11 @@ function UsersList({ canDelete, canToggleStatus }: { canDelete: boolean; canTogg
       await api.patch(`/users/${userId}/toggle-status`);
       // Refresh the users list after toggling status
       fetchUsers(pagination.currentPage);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Toggle Status Error:', err);
-      const errorMessage = err.response?.data?.message;
+      const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+        ? err.response?.data?.message
+        : undefined;
       if (typeof errorMessage === 'string') {
         setError(errorMessage);
       } else {
@@ -401,4 +408,6 @@ function UsersList({ canDelete, canToggleStatus }: { canDelete: boolean; canTogg
   );
 }
 
-export default withSuperAdminAccess(UsersList);
+const UsersListWithAccess = withSuperAdminAccess(UsersList);
+
+export default UsersListWithAccess;

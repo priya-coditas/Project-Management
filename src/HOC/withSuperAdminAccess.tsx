@@ -1,8 +1,16 @@
 import React, { useContext } from 'react';
 import AuthContext from '../store/AuthContext';
 
-function withSuperAdminAccess(WrappedComponent: React.ComponentType<any>) {
-  function SuperAdminAccessComponent(props: any) {
+export interface SuperAdminAccessProps {
+  role: string;
+  isSuperAdmin: boolean;
+  isAdmin: boolean;
+  canDelete: boolean;
+  canToggleStatus: boolean;
+}
+
+function withSuperAdminAccess<P extends object>(WrappedComponent: React.ComponentType<P>) {
+  function SuperAdminAccessComponent(props: Omit<P, keyof SuperAdminAccessProps>) {
     const authContext = useContext(AuthContext);
     const role = authContext.role;
 
@@ -16,7 +24,7 @@ function withSuperAdminAccess(WrappedComponent: React.ComponentType<any>) {
 
     return (
       <WrappedComponent
-        {...props}
+        {...(props as P)}
         role={role}
         isSuperAdmin={isSuperAdmin}
         isAdmin={isAdmin}

@@ -24,6 +24,7 @@ import {
   ERROR_SELECT_ROLE,
 } from '../../Constants/string';
 import api from '../../api/axios';
+import axios from 'axios';
 import { Loading } from '../Loading/Shimmer';
 
 interface EditUserFormData {
@@ -86,11 +87,12 @@ function EditUser({ isOpen, onClose, onUserUpdated, user }: EditUserProps) {
         if (value.trim().length < 2) return ERROR_NAME_MIN_LENGTH;
         if (value.trim().length > 50) return ERROR_NAME_MAX_LENGTH;
         return '';
-      case 'email':
+      case 'email': {
         if (!value.trim()) return ERROR_EMAIL_REQUIRED;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) return ERROR_EMAIL_INVALID;
         return '';
+      }
       case 'role':
         if (!value) return ERROR_SELECT_ROLE;
         return '';
@@ -171,8 +173,10 @@ function EditUser({ isOpen, onClose, onUserUpdated, user }: EditUserProps) {
         resetForm();
         onUserUpdated?.();
         onClose();
-      } catch (err: any) {
-        const errorMessage = err.response?.data?.message;
+      } catch (err) {
+        const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+          ? err.response?.data?.message
+          : undefined;
         if (Array.isArray(errorMessage)) {
           setApiError(errorMessage.join(', '));
         } else if (typeof errorMessage === 'string') {

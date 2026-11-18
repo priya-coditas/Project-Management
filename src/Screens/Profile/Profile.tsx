@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MdPerson, MdEmail, MdBadge, MdEdit, MdSecurity } from 'react-icons/md';
 import api from '../../api/axios';
+import axios from 'axios';
 import { ProfileShimmer } from '../../Component/Loading/Shimmer';
 import './Profile.css';
 
@@ -27,8 +28,8 @@ function Profile() {
       setError('');
       const response = await api.get('/users/me');
       setProfile(response.data);
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message;
+    } catch (err) {
+      const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err) ? err.response?.data?.message : undefined;
       if (Array.isArray(errorMessage)) {
         setError(errorMessage.join(', '));
       } else if (typeof errorMessage === 'string') {
@@ -40,7 +41,7 @@ function Profile() {
       setLoading(false);
     }
   };
-  
+
   const getRoleBadgeClass = (role: string) => {
     switch (role?.toLowerCase()) {
       case 'superadmin':

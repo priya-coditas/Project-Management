@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import './ProjectView.css';
 import { MdPerson, MdEdit, MdDelete, MdAdd, MdSearch, MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import CreateProject from './CreateProject';
 import EditProject from './EditProject';
 import withProjectAccess from '../../HOC/withProjectAccess';
 import api from '../../api/axios';
+import axios from 'axios';
 import { ProjectShimmer } from '../Loading/Shimmer';
 import AuthContext from '../../store/AuthContext';
 
@@ -74,7 +75,7 @@ function ProjectView({
     limit: 10,
   });
 
-  const fetchProjects = async (page: number = 1) => {
+  const fetchProjects = useCallback(async (page: number = 1) => {
     setLoading(true);
     setError('');
 
@@ -91,7 +92,7 @@ function ProjectView({
 
       // Handle different API response structures
       let projectData: Project[] = [];
-      let paginationData: any = null;
+      let paginationData: Partial<Record<string, number>> | null = null;
 
       if (Array.isArray(responseData)) {
         projectData = responseData;
@@ -119,8 +120,10 @@ function ProjectView({
         totalProjects: paginationData?.totalProjects || paginationData?.total || projectData.length,
         limit: paginationData?.limit || 10,
       });
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.message;
+    } catch (err) {
+      const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+        ? err.response?.data?.message
+        : undefined;
       if (typeof errorMessage === 'string') {
         setError(errorMessage);
       } else {
@@ -129,13 +132,13 @@ function ProjectView({
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     if (userId) {
       fetchProjects(1);
     }
-  }, [userId]);
+  }, [userId, fetchProjects]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
@@ -183,9 +186,11 @@ function ProjectView({
     try {
       await api.delete(`/projects/${projectId}`);
       fetchProjects(pagination.currentPage);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Delete Project Error:', err);
-      const errorMessage = err.response?.data?.message;
+      const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+        ? err.response?.data?.message
+        : undefined;
       if (typeof errorMessage === 'string') {
         setError(errorMessage);
       } else {
@@ -450,4 +455,6 @@ function ProjectView({
 }
 
 // Export the component wrapped with the HOC
-export default withProjectAccess(ProjectView);
+const ProjectViewWithAccess = withProjectAccess(ProjectView);
+
+export default ProjectViewWithAccess;

@@ -1,8 +1,16 @@
 import React, { useContext } from 'react';
 import AuthContext from '../store/AuthContext';
 
-function withProjectAccess(WrappedComponent: React.ComponentType<any>) {
-  function ProjectAccessComponent(props: any) {
+export interface ProjectAccessProps {
+  role: string;
+  isAdmin: boolean;
+  canCreateProject: boolean;
+  canEditProject: boolean;
+  canDeleteProject: boolean;
+}
+
+function withProjectAccess<P extends object>(WrappedComponent: React.ComponentType<P>) {
+  function ProjectAccessComponent(props: Omit<P, keyof ProjectAccessProps>) {
     const authContext = useContext(AuthContext);
     const role = authContext.role;
 
@@ -16,7 +24,7 @@ function withProjectAccess(WrappedComponent: React.ComponentType<any>) {
 
     return (
       <WrappedComponent
-        {...props}
+        {...(props as P)}
         role={role}
         isAdmin={isAdmin}
         canCreateProject={canCreateProject}

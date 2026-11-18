@@ -45,6 +45,7 @@ import {
   ERROR_END_DATE_AFTER_START,
 } from '../../Constants/string';
 import api from '../../api/axios';
+import axios from 'axios';
 import { Loading } from '../Loading/Shimmer';
 
 interface User {
@@ -366,8 +367,10 @@ function EditProject({ isOpen, onClose, onProjectUpdated, project }: EditProject
         resetForm();
         onProjectUpdated?.();
         onClose();
-      } catch (err: any) {
-        const errorMessage = err.response?.data?.message;
+      } catch (err) {
+        const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+          ? err.response?.data?.message
+          : undefined;
         if (Array.isArray(errorMessage)) {
           setApiError(errorMessage.join(', '));
         } else if (typeof errorMessage === 'string') {

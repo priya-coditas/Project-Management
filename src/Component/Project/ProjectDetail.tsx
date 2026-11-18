@@ -3,6 +3,7 @@ import { MdClose, MdAdd, MdExpandMore, MdExpandLess, MdCheck, MdArrowBack } from
 import { useLocation, useNavigate } from 'react-router-dom';
 import AuthContext from '../../store/AuthContext';
 import api from '../../api/axios';
+import axios from 'axios';
 import { ProjectDetailShimmer, Loading } from '../Loading/Shimmer';
 import './ProjectDetail.css';
 
@@ -85,9 +86,11 @@ function ProjectDetail() {
       try {
         const response = await api.get(`/projects/${projectId}`);
         setProject(response.data);
-      } catch (err: any) {
+      } catch (err) {
         console.error('Failed to fetch project details:', err);
-        const errorMessage = err.response?.data?.message;
+        const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+          ? err.response?.data?.message
+          : undefined;
         if (typeof errorMessage === 'string') {
           setError(errorMessage);
         } else {
@@ -147,9 +150,11 @@ function ProjectDetail() {
       // Refresh project details to get updated team members
       const response = await api.get(`/projects/${projectId}`);
       setProject(response.data);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Failed to remove team member:', err);
-      const errorMessage = err.response?.data?.message;
+      const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+        ? err.response?.data?.message
+        : undefined;
       if (typeof errorMessage === 'string') {
         setError(errorMessage);
       } else {
@@ -180,9 +185,11 @@ function ProjectDetail() {
 
       setShowAddMember(false);
       setSearchTerm('');
-    } catch (err: any) {
+    } catch (err) {
       console.error('Failed to add team member:', err);
-      const errorMessage = err.response?.data?.message;
+      const errorMessage = axios.isAxiosError<{ message?: string | string[] }>(err)
+        ? err.response?.data?.message
+        : undefined;
       if (typeof errorMessage === 'string') {
         setError(errorMessage);
       } else {

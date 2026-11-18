@@ -341,4 +341,6 @@ function DashboardComponent({ canViewUsers }: { canViewUsers: boolean }) {
 }
 
 // Export the component wrapped with the HOC
-export default withAdminAccess(DashboardComponent);
+const DashboardComponentWithAccess = withAdminAccess(DashboardComponent);
+
+export default DashboardComponentWithAccess;

@@ -1,8 +1,14 @@
 import React, { useContext } from 'react';
 import AuthContext from '../store/AuthContext';
 
-function withAdminAccess(WrappedComponent: React.ComponentType<any>) {
-  function AdminAccessComponent(props: any) {
+export interface AdminAccessProps {
+  isAdmin: boolean;
+  canViewUsers: boolean;
+  role: string;
+}
+
+function withAdminAccess<P extends object>(WrappedComponent: React.ComponentType<P>) {
+  function AdminAccessComponent(props: Omit<P, keyof AdminAccessProps>) {
     const authContext = useContext(AuthContext);
     const role = authContext.role;
 
@@ -12,7 +18,7 @@ function withAdminAccess(WrappedComponent: React.ComponentType<any>) {
 
     return (
       <WrappedComponent
-        {...props}
+        {...(props as P)}
         isAdmin={isAdmin}
         canViewUsers={canViewUsers}
         role={role}
